@@ -2,12 +2,13 @@
     <div id="index">
         <el-container>
             <el-header style="padding-right: 0;background: rgba(255,255,255,0.5)"><span class="title">酷邦网管理系统</span>
-                <el-dropdown @command='logOut' trigger="click" size="small" style="float: right;line-height: 60px;width:100px;cursor: pointer;text-align: center">
+                <el-dropdown @command='handle' trigger="click" size="small" style="float: right;line-height: 60px;width:100px;cursor: pointer;text-align: center">
                     <span class="el-dropdown-link">
                         <i class="el-icon-user" style="font-size: 20px;padding: 20px" ></i>
                     </span>
                         <el-dropdown-menu slot="dropdown" style="margin-top: -10px;">
-                            <el-dropdown-item command="logOut" icon="el-icon-top-right">退出登录</el-dropdown-item>
+                            <el-dropdown-item command='details'  icon="el-icon-user">我的资料</el-dropdown-item>
+                            <el-dropdown-item command='logout' icon="el-icon-top-right">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
                 </el-dropdown>
             </el-header>
@@ -27,9 +28,13 @@
             sidebar
         },
         methods:{
-            logOut:function(){
-                this.$store.commit('changeLogin')
-                this.$router.push({path:'/login'})
+            handle:function(command){
+                if(command==='logout'){
+                    this.$store.commit('changeLogin')
+                    this.$router.push({path:'/login'})}
+                if(command==='details'){
+                    this.$router.push({path:'/detail'})
+                }
             }
         },
         computed:{

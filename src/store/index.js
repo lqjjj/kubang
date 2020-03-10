@@ -9,35 +9,30 @@ import goods from "../views/merchants/goods";
 import partake from "../views/merchants/partake";
 import apply from '../views/exhibit/apply'
 import mangeExhibit from "../views/exhibit/mangeExhibit";
+import exhiDetails from "../views/public/exhiDetails";
+import storeDetails from "../views/public/store"
+import edit from "../components/edit"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLogin:false,
     type:0,
     routes:[]
   },
   mutations: {
-    changeLogin(state){
-      if(state.isLogin===true){
-        state.isLogin=false
-      }else {
-        state.isLogin=true
-      }
-    },
     changeType(state,type){
       if(type===1){
-        state.type=0
-      }
-      if(type===2){
         state.type=1
       }
-      if(type===3){
+      if(type===2){
         state.type=2
       }
-      if(type===4){
+      if(type===3){
         state.type=3
+      }
+      if(type===4){
+        state.type=4
       }
     }
   },
@@ -47,7 +42,7 @@ export default new Vuex.Store({
   },
   getters:{
     routes:state => {
-      if (state.type===0){
+      if (state.type===1){
         return [
           {
             path: '/',
@@ -87,7 +82,7 @@ export default new Vuex.Store({
               }]
           }]
       }
-      if (state.type===1){
+      if (state.type===2){
         return [
           {
             path: '/',
@@ -127,7 +122,7 @@ export default new Vuex.Store({
               }]
           }]
       }
-      if (state.type===2){
+      if (state.type===3){
         return [
           {
             path: '/',
@@ -167,7 +162,7 @@ export default new Vuex.Store({
               }]
           }]
       }
-      if (state.type===3){
+      if (state.type===4){
         return [
           {
             path: '/',
@@ -176,7 +171,6 @@ export default new Vuex.Store({
               {
                 path: '/detail',
                 component: detail,
-                name: '商家资料',
                 meta:{
                   icon:['el-icon-s-shop']
                 }
@@ -198,15 +192,35 @@ export default new Vuex.Store({
                 }
               },
               {
-                path:'/partake',
-                component:partake,
-                name:'我的参展',
-                meta:{
-                  icon:['el-icon-s-opportunity']
+                path: '/partake',
+                component: partake,
+                name: '我的参展',
+                meta: {
+                  icon: ['el-icon-s-opportunity']
                 }
-              }]
-          }]
+                },
+              {
+                path:'/exhibit',
+                component:exhiDetails
+              },
+              {
+                path:'/store',
+                component:storeDetails
+              },
+              {
+                path:'/edit',
+                component:edit
+              }
+              ]
+          }
+        ]
       }
+    },
+    type:state => {
+      if (sessionStorage.getItem("type")){
+        return sessionStorage.getItem("type")
+      }
+      else return state.type
     }
   }
 })

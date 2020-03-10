@@ -8,8 +8,8 @@
                 active-text-color="rgb(251, 53, 116)"
                 :router="true"
         >
-            <el-menu-item v-for="route in routes" :index="route.path" :key="route.path">
-                <template slot="title">
+            <el-menu-item v-for="route in routes" :index="route.path" :key="route.path" >
+                <template slot="title" >
                     <i :class="route.meta.icon"></i>
                     <span>{{route.name}}</span>
                 </template>
@@ -29,7 +29,7 @@
         },
         computed:{
             routes(){
-                return this.$store.getters.routes[0].children
+                return this.$store.getters.routes[0].children.filter((item)=>{return item.name})
             }
         }
     }

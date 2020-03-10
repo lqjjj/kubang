@@ -12,7 +12,7 @@
         name: "collection",
         data() {
             return {
-                activeName: 'second'
+                activeName: 'first'
             }
         }
     }

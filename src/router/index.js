@@ -7,7 +7,9 @@ import collection from "../views/collection";
 import message from "../views/message";
 import index from "../views/index";
 import logIn from "../views/logIn";
-import nofound from "../views/nofound"
+import reg from "../views/reg"
+import exhiDetails from "../views/public/exhiDetails";
+// import nofound from "../views/nofound"
 Vue.use(VueRouter)
 
 // const routes = [
@@ -53,10 +55,9 @@ export const constantRoutes=[
     component:logIn
   },
   {
-    path:'/404',
-    component:nofound
-  },
-  { path: '*', redirect: '/404', hidden: true }
+    path: '/regist',
+    component: reg
+  }
 ]
 export const asyncRoutes=[
   {
@@ -92,7 +93,7 @@ export const asyncRoutes=[
 // })
 
 const createRouter = () => new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
@@ -100,11 +101,10 @@ const createRouter = () => new VueRouter({
 const router = createRouter()
 
 router.beforeEach((to, from, next) => {
-  if(store.state.isLogin===false && to.path!=='/login'){
+  if(store.getters.type===0 && to.path!=='/login'){
     next({path: '/login'})
   }
   next()
-
 })
 
 export function resetRouter() {
