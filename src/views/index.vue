@@ -30,7 +30,8 @@
         methods:{
             handle:function(command){
                 if(command==='logout'){
-                    this.$store.commit('changeLogin')
+                    this.$store.commit('changeLogin',0)
+                    sessionStorage.clear()
                     this.$router.push({path:'/login'})}
                 if(command==='details'){
                     this.$router.push({path:'/detail'})

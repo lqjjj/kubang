@@ -1,12 +1,14 @@
 <template>
     <div class="reg_main">
+        <el-page-header @back="goBack" title="返回登录" content="注册账号" style="margin-bottom: 40px">
+        </el-page-header>
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item>
             <el-switch
-                    v-model="type"
-                    active-text="手机号注册"
-                    inactive-text="邮箱注册">
-            </el-switch>
+                v-model="type"
+                active-text="手机号注册"
+                inactive-text="邮箱注册">
+        </el-switch>
         </el-form-item>
         <el-form-item v-if='!type' label="手机号" prop="tell">
             <el-input type="tel" v-model="ruleForm.tel" autocomplete="off"></el-input>
@@ -117,6 +119,9 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            goBack(){
+              this.$router.back()
             },
             send(){
                 if (!this.timer) {

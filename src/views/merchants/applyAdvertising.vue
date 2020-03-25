@@ -1,9 +1,16 @@
 <template>
     <div>
-        <h3>请根据示例文件中的格式，提交相关展会信息，包括展会图标、展会简介、各个展厅介绍等</h3>
+        <h3>请上传想展示的广告页面/图片 并选择优先级</h3>
         <div style="display: flex">
             <div class="left">
-                <el-link type="primary" style="margin-bottom:10px">点击下载示例模板文件</el-link>
+                <el-select v-model="value" placeholder="请选择优先级" style="margin-bottom:15px">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
                 <div style="width: 300px">
                     <el-upload
                             class="upload-demo"
@@ -59,21 +66,34 @@
             return{
                 tableData: [{
                     date: '2016-05-02',
-                    name: '展会申请',
+                    name: '广告申请',
                     status: 1
                 }, {
                     date: '2016-05-04',
-                    name: '展会申请',
+                    name: '广告申请',
                     status: 1
                 }, {
                     date: '2016-05-01',
-                    name: '展会申请',
+                    name: '广告申请',
                     status: 3
                 }, {
                     date: '2016-05-03',
-                    name: '展会申请',
+                    name: '广告申请',
                     status: 2
-                }]
+                }],
+                options: [{
+                    value: '选项1',
+                    label: '低'
+                }, {
+                    value: '选项2',
+                    label: '高'
+                }, {
+                    value: '选项3',
+                    label: '较高'
+                }, {
+                    value: '选项4',
+                    label: '最高'
+                }],
             }
         }
     }

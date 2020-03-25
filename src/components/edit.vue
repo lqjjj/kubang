@@ -2,23 +2,23 @@
     <div class="main">
         <el-page-header @back="goBack" content="展会信息" style="margin-bottom: 20px">
         </el-page-header>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="展会id" prop="id">
-                <el-input v-model="ruleForm.id"></el-input>
+        <el-form label-width="100px" class="demo-ruleForm" >
+            <el-form-item label="展会id" prop="id" >
+                <el-input v-model="ruleForm.id" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="展会名称" prop="name">
                 <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="展会时间" required>
+            <el-form-item label="展会时间" >
                 <el-col :span="11">
                     <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startTime" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col class="line" :span="2">-</el-col>
                 <el-col :span="11">
                     <el-form-item prop="date2">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 100%;"></el-date-picker>
+                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endTime" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-form-item>
@@ -89,8 +89,7 @@
                     </el-form-item></el-col>
             </el-row>
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
+                <el-button type="primary" @click="submit()">立即{{buttonName}}</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -118,18 +117,31 @@
                     Tel:'',
                     status:"",
                     picture:''
-                }
+                },
+                rule:{
+                    id:[]
+                },
+                buttonName:'创建'
             };
         },
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
+            submit() {
+                this.$confirm('你确定要提交修改吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'success'
+                }).then(() => {
+                    this.axios.put('api/exhibition/exhibition/server/update/all?userId=1',this.ruleForm).then(()=>{
+                        this.$message({
+                            message: '修改成功！',
+                            type: 'success'
+                        });
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
                 });
             },
             resetForm(formName) {
@@ -137,6 +149,16 @@
             },
             goBack(){
                 this.$router.back()
+            }
+        },
+        created(){
+            if(this.$route.query.id){
+                this.axios.get(`/api/exhibition/exhibition/admin/query/id/${this.$route.query.id}`).then((res)=>{
+                    this.ruleForm=res.data.data
+                    this.ruleForm.startTime=new Date(this.ruleForm.startTime)
+                    console.log(this.ruleForm)
+                })
+                this.buttonName='修改'
             }
         }
     }

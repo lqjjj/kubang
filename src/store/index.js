@@ -12,7 +12,10 @@ import mangeExhibit from "../views/exhibit/mangeExhibit";
 import exhiDetails from "../views/public/exhiDetails";
 import storeDetails from "../views/public/store"
 import edit from "../components/edit"
-
+import applyGood from "../views/merchants/applyGood";
+import applyAdvertising from "../views/merchants/applyAdvertising";
+import auditGood from  "../views/exhibit/auditGood"
+import auditExhibition from "../views/super/auditExhibition"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -34,6 +37,9 @@ export default new Vuex.Store({
       if(type===4){
         state.type=4
       }
+      if(type===0){
+        state.type=0
+      }
     }
   },
   actions: {
@@ -41,8 +47,8 @@ export default new Vuex.Store({
   modules: {
   },
   getters:{
-    routes:state => {
-      if (state.type===1){
+    routes:getters => {
+      if (getters.type===1){
         return [
           {
             path: '/',
@@ -82,7 +88,7 @@ export default new Vuex.Store({
               }]
           }]
       }
-      if (state.type===2){
+      if (getters.type===2){
         return [
           {
             path: '/',
@@ -97,7 +103,7 @@ export default new Vuex.Store({
                 }
               },
               {
-                path:'goods',
+                path:'/goods',
                 component:goods,
                 name:'商品列表',
                 meta:{
@@ -119,10 +125,27 @@ export default new Vuex.Store({
                 meta:{
                   icon:['el-icon-s-opportunity']
                 }
-              }]
+              },
+              {
+                path:'/applyGood',
+                component:applyGood,
+                name:'申请展品',
+                meta:{
+                  icon:['el-icon-plus']
+                }
+              },
+              {
+                path:'/applyAdvertising',
+                component:applyAdvertising,
+                name:'广告申请',
+                meta:{
+                  icon:['el-icon-s-data']
+                }
+              }
+            ]
           }]
       }
-      if (state.type===3){
+      if (getters.type===3){
         return [
           {
             path: '/',
@@ -159,10 +182,19 @@ export default new Vuex.Store({
                 meta:{
                   icon:['el-icon-set-up']
                 }
-              }]
+              },
+              {
+                path:'/auditGood',
+                component:auditGood,
+                name:'审核商品',
+                meta:{
+                  icon:['el-icon-s-management']
+                }
+              }
+            ]
           }]
       }
-      if (state.type===4){
+      if (getters.type==4){
         return [
           {
             path: '/',
@@ -176,7 +208,7 @@ export default new Vuex.Store({
                 }
               },
               {
-                path:'goods',
+                path:'/goods',
                 component:goods,
                 name:'商品列表',
                 meta:{
@@ -192,13 +224,22 @@ export default new Vuex.Store({
                 }
               },
               {
-                path: '/partake',
-                component: partake,
-                name: '我的参展',
-                meta: {
-                  icon: ['el-icon-s-opportunity']
+                path:'/auditGood',
+                component:auditGood,
+                name:'审核商品',
+                meta:{
+                  icon:['el-icon-s-management']
                 }
-                },
+              },
+              {
+                path: '/auditExhibition',
+                component: auditExhibition,
+                name: '展会审核',
+                meta:{
+                  icon:['el-icon-s-order']
+                }
+
+              },
               {
                 path:'/exhibit',
                 component:exhiDetails
@@ -218,7 +259,8 @@ export default new Vuex.Store({
     },
     type:state => {
       if (sessionStorage.getItem("type")){
-        return sessionStorage.getItem("type")
+        state.type=Number(sessionStorage.getItem("type"))
+        return Number(sessionStorage.getItem("type"))
       }
       else return state.type
     }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>请根据示例文件中的格式，提交相关展会信息，包括展会图标、展会简介、各个展厅介绍等</h3>
+        <h3>请根据示例文件中的格式，填好所要申请的商品、申请的展示优先级、展示时间段等信息后，上传文件等待审核</h3>
         <div style="display: flex">
             <div class="left">
                 <el-link type="primary" style="margin-bottom:10px">点击下载示例模板文件</el-link>
@@ -59,19 +59,19 @@
             return{
                 tableData: [{
                     date: '2016-05-02',
-                    name: '展会申请',
+                    name: '商品申请',
                     status: 1
                 }, {
                     date: '2016-05-04',
-                    name: '展会申请',
+                    name: '商品申请',
                     status: 1
                 }, {
                     date: '2016-05-01',
-                    name: '展会申请',
+                    name: '商品申请',
                     status: 3
                 }, {
                     date: '2016-05-03',
-                    name: '展会申请',
+                    name: '商品申请',
                     status: 2
                 }]
             }

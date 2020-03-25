@@ -106,6 +106,12 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+router.onReady(() => {
+  if(store.getters.type!==0) {
+    router.addRoutes(store.getters.routes) // 添加动态路由,这里不必用$addRoutes，因为刷新后就没有上一次的动态路由，故不必清除
+  }
+})
+
 
 export function resetRouter() {
   const newRouter = createRouter()
