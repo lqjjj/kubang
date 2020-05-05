@@ -63,9 +63,9 @@
             >
             </el-table-column>
             <el-table-column
-                    label="管理" v-if="this.$store.getters.type===4">
+                    label="管理" >
                 <template slot-scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index)">编辑</el-button>
+                    <el-button size="small" @click="handleEdit(scope.$index)">我要参展</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -82,7 +82,7 @@
         },
         methods:{
             initData(){
-                this.axios.get(`api/exhibition/exhibition/all/query/keyWord?keyWord=%E6%B5%8B%E8%AF%95&pageNum=1`).then((res)=>{this.formatData(res.data.data.list)})
+                this.axios.get(`api/exhibition/exhibition/all/query/keyWord?keyWord=%E4%B8%AD%E5%9B%BD&pageNum=1`).then((res)=>{this.formatData(res.data.data.list)})
             },
             formatData(list){
                 this.tableData=[]
@@ -93,7 +93,7 @@
                         startTime:new Date(item.startTime).toLocaleDateString(),
                         endTime:new Date(item.endTime).toLocaleDateString(),
                         organizer:item.organizer,
-                        introduction:item.introduction,
+                        introduction:item.introduction.slice(0,20)+'....',
                         showRoom:item.showRoom,
                         status:item.status,
                         tel:item.tel

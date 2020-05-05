@@ -11,7 +11,7 @@
             <el-menu-item v-for="route in routes" :index="route.path" :key="route.path" >
                 <template slot="title" >
                     <i :class="route.meta.icon"></i>
-                    <span>{{route.name}}</span>
+                    <span>{{route.names}}</span>
                 </template>
             </el-menu-item>
         </el-menu>
@@ -29,7 +29,7 @@
         },
         computed:{
             routes(){
-                return this.$store.getters.routes[0].children.filter((item)=>{return item.name})
+                return this.$store.getters.routes[0].children.filter((item)=>{return item.names})
             }
         }
     }

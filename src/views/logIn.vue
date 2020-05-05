@@ -56,23 +56,8 @@
         methods:{
             async dealLogin(){
                 this.$store.commit('changeType',this.radio)
-                // if (this.radio===1){
-                    await this.$router.addRoutes(this.$store.getters.routes)
-                console.log(this.$router)
-                    this.$router.push({path:'/'})
-                // }
-                // if (this.radio===2){
-                //     await this.$router.addRoutes(this.$store.getters.routes)
-                //     this.$router.push({path:'/'})
-                // }
-                // if (this.radio===3){
-                //     await this.$router.addRoutes(this.$store.getters.routes)
-                //     this.$router.push({path:'/'})
-                // }
-                // if (this.radio===4){
-                //     await this.$router.addRoutes(this.$store.getters.routes)
-                //     this.$router.push({path:'/'})
-                // }
+                await this.$router.addRoutes(this.$store.getters.routes)
+                this.$router.push({path:'/'})
                 sessionStorage.setItem('type',this.radio)
             },
             dealReg(){

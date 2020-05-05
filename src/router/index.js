@@ -57,7 +57,8 @@ export const constantRoutes=[
   {
     path: '/regist',
     component: reg
-  }
+  },
+
 ]
 export const asyncRoutes=[
   {

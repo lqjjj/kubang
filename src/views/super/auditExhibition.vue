@@ -27,7 +27,7 @@
                     label="申请详情"
                     width="180">
                 <template >
-                    <el-link type="primary">下载链接</el-link>
+                    <el-button size="small" @click="handleEdit(scope.$index)">查看详情</el-button>
                 </template>
             </el-table-column>
             <el-table-column

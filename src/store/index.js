@@ -16,6 +16,11 @@ import applyGood from "../views/merchants/applyGood";
 import applyAdvertising from "../views/merchants/applyAdvertising";
 import auditGood from  "../views/exhibit/auditGood"
 import auditExhibition from "../views/super/auditExhibition"
+import manageAd from "../views/super/manageAd"
+import manageCompany from "../views/super/manageCompany"
+import addGoods from "../views/merchants/addGoods";
+import collectDetail from "../views/collectDetail";
+import merInfo from "../views/merchants/merInfo";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -57,7 +62,7 @@ export default new Vuex.Store({
               {
                 path: '/detail',
                 component: detail,
-                name: '个人资料',
+                names: '个人资料',
                 meta:{
                   icon:['el-icon-user']
                 }
@@ -65,7 +70,7 @@ export default new Vuex.Store({
               {
                 path: '/exhibition',
                 component: exhibition,
-                name: '展会列表',
+                names: '展会列表',
                 meta:{
                   icon:['el-icon-s-unfold']
                 }
@@ -73,7 +78,7 @@ export default new Vuex.Store({
               {
                 path: '/collection',
                 component: collection,
-                name: '我的收藏',
+                names: '我的收藏',
                 meta:{
                   icon:['el-icon-star-off']
                 }
@@ -81,11 +86,17 @@ export default new Vuex.Store({
               {
                 path: '/message',
                 component: message,
-                name: '留言与回复',
+                names: '留言与回复',
                 meta:{
                   icon:['el-icon-chat-dot-round']
                 }
-              }]
+              },
+              {
+                path:"/collectionDetail",
+                name:'collectDetail',
+                component:collectDetail
+              }
+              ]
           }]
       }
       if (getters.type===2){
@@ -95,9 +106,9 @@ export default new Vuex.Store({
             component: index,
             children: [
               {
-                path: '/detail',
-                component: detail,
-                name: '商家资料',
+                path: '/merInfo',
+                component: merInfo,
+                names: '商家资料',
                 meta:{
                   icon:['el-icon-s-shop']
                 }
@@ -105,7 +116,7 @@ export default new Vuex.Store({
               {
                 path:'/goods',
                 component:goods,
-                name:'商品列表',
+                names:'商品列表',
                 meta:{
                   icon:['el-icon-menu']
                 }
@@ -113,7 +124,7 @@ export default new Vuex.Store({
               {
                 path: '/exhibition',
                 component: exhibition,
-                name: '展会列表',
+                names: '展会列表',
                 meta:{
                   icon:['el-icon-s-unfold']
                 }
@@ -121,7 +132,7 @@ export default new Vuex.Store({
               {
                 path:'/partake',
                 component:partake,
-                name:'我的参展',
+                names:'我要参展',
                 meta:{
                   icon:['el-icon-s-opportunity']
                 }
@@ -129,15 +140,20 @@ export default new Vuex.Store({
               {
                 path:'/applyGood',
                 component:applyGood,
-                name:'申请展品',
+                names:'申请展品',
                 meta:{
                   icon:['el-icon-plus']
                 }
               },
               {
+                path:'/addGoods',
+                name:'addGoods',
+                component:addGoods
+              },
+              {
                 path:'/applyAdvertising',
                 component:applyAdvertising,
-                name:'广告申请',
+                names:'广告申请',
                 meta:{
                   icon:['el-icon-s-data']
                 }
@@ -154,7 +170,7 @@ export default new Vuex.Store({
               {
                 path: '/detail',
                 component: detail,
-                name: '展会资料',
+                names: '展会资料',
                 meta:{
                   icon:['el-icon-date']
                 }
@@ -162,7 +178,7 @@ export default new Vuex.Store({
               {
                 path: '/exhibition',
                 component: exhibition,
-                name: '展会列表',
+                names: '展会列表',
                 meta:{
                   icon:['el-icon-s-unfold']
                 }
@@ -170,7 +186,7 @@ export default new Vuex.Store({
               {
                 path: '/apply',
                 component: apply,
-                name: '我要开展',
+                names: '我要开展',
                 meta:{
                   icon:['el-icon-edit']
                 }
@@ -178,7 +194,7 @@ export default new Vuex.Store({
               {
                 path:'/mangeex',
                 component:mangeExhibit,
-                name:'展会管理',
+                names:'展会管理',
                 meta:{
                   icon:['el-icon-set-up']
                 }
@@ -186,7 +202,7 @@ export default new Vuex.Store({
               {
                 path:'/auditGood',
                 component:auditGood,
-                name:'审核商品',
+                names:'商家管理',
                 meta:{
                   icon:['el-icon-s-management']
                 }
@@ -208,25 +224,25 @@ export default new Vuex.Store({
                 }
               },
               {
-                path:'/goods',
-                component:goods,
-                name:'商品列表',
+                path:'/manageAd',
+                component:manageAd,
+                names:'广告管理',
                 meta:{
-                  icon:['el-icon-menu']
+                  icon:['el-icon-data-analysis']
                 }
               },
               {
                 path: '/exhibition',
                 component: exhibition,
-                name: '展会列表',
+                names: '展会列表',
                 meta:{
                   icon:['el-icon-s-unfold']
                 }
               },
               {
-                path:'/auditGood',
-                component:auditGood,
-                name:'审核商品',
+                path:'/manageCompany',
+                component:manageCompany,
+                names:'商家管理',
                 meta:{
                   icon:['el-icon-s-management']
                 }
@@ -234,7 +250,7 @@ export default new Vuex.Store({
               {
                 path: '/auditExhibition',
                 component: auditExhibition,
-                name: '展会审核',
+                names: '展会审核',
                 meta:{
                   icon:['el-icon-s-order']
                 }
@@ -250,6 +266,7 @@ export default new Vuex.Store({
               },
               {
                 path:'/edit',
+                name:'Edit',
                 component:edit
               }
               ]

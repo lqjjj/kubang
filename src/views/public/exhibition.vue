@@ -4,7 +4,7 @@
             <el-col :span="6"><el-input v-model="searching" placeholder="请输入关键词搜索展会" style="margin-bottom: 20px;width: 300px"></el-input></el-col>
             <el-col :span="2"><el-button  @click="handleSearch">搜索展会</el-button></el-col>
             <el-col :span="6"><el-button  @click="handleId">搜索展会ID</el-button></el-col>
-            <el-col :span="5"><el-button  @click="handleEdit">添加展会</el-button></el-col>
+            <el-col :span="5"><el-button  @click="handleNew">新增展会</el-button></el-col>
             <el-col :span="2"><el-button  @click="handlePage('up')">上一页</el-button></el-col>
             <el-col :span="2"><el-button  @click="handlePage('next')">下一页</el-button></el-col>
         </el-row>
@@ -15,7 +15,7 @@
             <el-table-column
                     prop="id"
                     label="id"
-                    width="50">
+                    width="60">
             </el-table-column>
             <el-table-column
                     prop="startTime"
@@ -32,7 +32,7 @@
                     width="150"
             >
                 <template slot-scope="scope">
-                    <el-link type="primary" @click="handleDetails(scope.$index)">{{scope.row.name}}</el-link>
+                    <el-link type="primary">{{scope.row.name}}</el-link>
                 </template>
             </el-table-column>
             <el-table-column
@@ -47,15 +47,18 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="introduction"
                     label="展会概况"
-                    width="150"
-            >
+                    width="200"
+            ><template slot-scope="scope">
+                <div  class="text">
+                {{scope.row.introduction}}
+                </div>
+            </template>
             </el-table-column>
             <el-table-column
                     prop="showRoom"
                     label="所用展厅"
-                    width="150"
+                    width="100"
             >
             </el-table-column>
             <el-table-column
@@ -89,6 +92,7 @@
                 value:'',
                 tableData: [],
                 page:1,
+                data:[],
                 options:[
                     {
                     value:'name',
@@ -106,7 +110,10 @@
         },
         methods:{
             handleEdit(scope){
-                this.$router.push({path:'/edit',query:{id:this.tableData[scope].id}})
+                this.$router.push({name:'Edit',params:{data:this.data[scope]}})
+            },
+            handleNew(){
+              this. $router.push({path:'/edit'})
             },
             handleDetails(scope){
                 this.$router.push('/exhibit')
@@ -115,10 +122,15 @@
                 if (type==='next'){
                     this.page++
                 }
+                if (type==='up'){
+                    if(this.page>1){
+                    this.page--}
+                }
                 this.initData()
             },
             handleSearch(){
-                this.axios.get(`/api/exhibition/exhibition/admin/query/keyWord?keyWord=${this.searching}&pageNum=1`).then((res)=>{this.formatData(res.data.data.list)})
+                this.axios.get(`/api/exhibition/admin/query/keyWord?keyWord=${this.searching}&pageNum=1`).then((res)=>{
+                    this.formatData(res.data.data.list)})
             },
             handleId(){
                 this.axios.get(`/api/exhibition/exhibition/admin/query/id/${this.searching}`).then((res)=>{
@@ -129,10 +141,13 @@
                 })
             },
             initData(){
-                this.axios.get(`/api/exhibition/exhibition/admin/query/allStatus/${this.page}`).then((res)=>{this.formatData(res.data.data.list)})
+                this.axios.get(`/api/exhibition/Admin/queryAllExhibition/${this.page}`).then((res)=>{this.formatData(
+                    res.data.data.list)})
             },
             formatData(list){
                 this.tableData=[]
+                console.log(list)
+                this.data=list
                 for(let item of list){
                     this.tableData.push({
                         name:item.name,
@@ -160,5 +175,12 @@
     #search_bar{
         display: flex;
         justify-content: flex-start;
+    }
+    .text{
+        overflow:hidden;
+        text-overflow:ellipsis;
+        display:-webkit-box;
+        -webkit-line-clamp:3;
+        -webkit-box-orient:vertical;
     }
 </style>

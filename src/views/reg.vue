@@ -2,25 +2,28 @@
     <div class="reg_main">
         <el-page-header @back="goBack" title="返回登录" content="注册账号" style="margin-bottom: 40px">
         </el-page-header>
-    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
         <el-form-item>
             <el-switch
                 v-model="type"
-                active-text="手机号注册"
-                inactive-text="邮箱注册">
+                active-text="邮箱注册"
+                inactive-text="手机号注册">
         </el-switch>
         </el-form-item>
         <el-form-item v-if='!type' label="手机号" prop="tell">
-            <el-input type="tel" v-model="ruleForm.tel" autocomplete="off"></el-input>
+            <el-input type="tel" v-model="ruleForm.tel" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item v-if='type' label="邮箱账号" prop="tell">
-            <el-input type="tel" v-model="ruleForm.tel" autocomplete="off"></el-input>
+            <el-input type="tel" v-model="ruleForm.tel" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
             <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
             <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邀请码（选填）">
+            <el-input  v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-row type="flex" :gutter="20">
             <el-col :span="20">
