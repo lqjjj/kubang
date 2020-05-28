@@ -82,7 +82,7 @@
         },
         methods:{
             initData(){
-                this.axios.get(`api/exhibition/exhibition/all/query/keyWord?keyWord=%E4%B8%AD%E5%9B%BD&pageNum=1`).then((res)=>{this.formatData(res.data.data.list)})
+                this.axios.get(`api/exhibition/Admin/queryAllExhibition/1`).then((res)=>{this.formatData(res.data.data.list)})
             },
             formatData(list){
                 this.tableData=[]

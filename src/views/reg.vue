@@ -22,13 +22,13 @@
         <el-form-item label="确认密码" prop="checkPass">
             <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="邀请码（选填）">
-            <el-input  v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item label="邀请码" prop="invite">
+            <el-input  v-model="ruleForm.invite" autocomplete="off"></el-input>
         </el-form-item>
         <el-row type="flex" :gutter="20">
             <el-col :span="20">
-                <el-form-item label="验证码" prop="age">
-                <el-input v-model.number="ruleForm.age"></el-input></el-form-item>
+                <el-form-item label="验证码" prop="code">
+                <el-input v-model="ruleForm.code"></el-input></el-form-item>
             </el-col>
             <el-col :span="10">
                 <el-button @click="send">
@@ -51,20 +51,10 @@
         name: "reg",
         data() {
             var checkAge = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('验证码不能为空'));
+                if (value === '') {
+                    callback(new Error('请输入验证码'));
                 }
-                setTimeout(() => {
-                    if (!Number.isInteger(value)) {
-                        callback(new Error('请输入数字值'));
-                    } else {
-                        if (value < 18) {
-                            callback(new Error('验证码错误'));
-                        } else {
-                            callback();
-                        }
-                    }
-                }, 1000);
+                callback()
             };
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
@@ -89,8 +79,9 @@
                 ruleForm: {
                     pass: '',
                     checkPass: '',
-                    age: '',
+                    code: '',
                     tel:"",
+                    invite:""
                 },
                 rules: {
                     pass: [
@@ -99,7 +90,10 @@
                     checkPass: [
                         { validator: validatePass2, trigger: 'blur' }
                     ],
-                    age: [
+                    code: [
+                        { validator: checkAge, trigger: 'blur' }
+                    ],
+                    invite:[
                         { validator: checkAge, trigger: 'blur' }
                     ]
                 },
@@ -113,9 +107,16 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        this.axios.post(`/api/exhibition/email/check/register?email=${this.ruleForm.tel}&pwd=${this.ruleForm.pass}&code=${this.ruleForm.code}&recCode=${this.ruleForm.invite}`).then((res)=>{
+                            if(res.data.errMsg){
+                                this.$message.error(res.data.errMsg)
+                            }
+                            else {
+                                this.$message.success('注册成功')
+                                this.$router.push({path:'/login'})
+                            }
+                        })
                     } else {
-                        console.log('error submit!!');
                         return false;
                     }
                 });
@@ -128,6 +129,15 @@
             },
             send(){
                 if (!this.timer) {
+                    if(this.type){
+                            this.axios.post(`/api/exhibition/email/send/emailRegister?to=${this.ruleForm.tel}`).then(()=>{
+                                this.$message.success('发送成功')
+                            })
+                        .catch((res)=>{
+                            this.$message.error(res)
+                        })
+                    }
+
                     this.count = TIME_COUNT;
                     this.show = false;
                     this.timer = setInterval(() => {

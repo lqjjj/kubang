@@ -21,6 +21,8 @@ import manageCompany from "../views/super/manageCompany"
 import addGoods from "../views/merchants/addGoods";
 import collectDetail from "../views/collectDetail";
 import merInfo from "../views/merchants/merInfo";
+import add from "../components/add"
+import auditPri from "../views/super/auditPri";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -206,6 +208,11 @@ export default new Vuex.Store({
                 meta:{
                   icon:['el-icon-s-management']
                 }
+              },
+              {
+                path:'/add',
+                name:'Add',
+                component:add
               }
             ]
           }]
@@ -254,7 +261,14 @@ export default new Vuex.Store({
                 meta:{
                   icon:['el-icon-s-order']
                 }
-
+              },
+              {
+                path: '/auditPri',
+                component: auditPri,
+                names: '展品审核',
+                meta:{
+                  icon:['el-icon-goods']
+                }
               },
               {
                 path:'/exhibit',
@@ -268,7 +282,26 @@ export default new Vuex.Store({
                 path:'/edit',
                 name:'Edit',
                 component:edit
-              }
+              },
+              {
+                path:"/collectionDetail",
+                name:'collectDetail',
+                component:collectDetail
+              },
+              {
+                path: '/merInfo',
+                component: merInfo,
+                name: 'merInfo',
+              },
+              {
+                path:'/manageCompany/goods',
+                component: goods
+              },
+              {
+                path:'/addGoods',
+                name:'addGoods',
+                component:addGoods
+              },
               ]
           }
         ]

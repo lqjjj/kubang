@@ -1,5 +1,6 @@
 <template>
     <div id="manage">
+        <el-col :span="5" ><el-button  @click="handleNew" style="margin-bottom: 20px">新增展会</el-button></el-col>
         <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -10,9 +11,11 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="startTime"
                     label="开始日期"
                     width="100">
+                <template slot-scope="scope">
+                    {{new Date(scope.row.startTime).toLocaleDateString()}}
+                </template>
             </el-table-column>
             <el-table-column
                     prop="endTime"
@@ -39,10 +42,13 @@
             >
             </el-table-column>
             <el-table-column
-                    prop="introduction"
                     label="展会概况"
-                    width="150"
-            >
+                    width="200"
+            ><template slot-scope="scope">
+                <div  class="text">
+                    {{scope.row.introduction}}
+                </div>
+            </template>
             </el-table-column>
             <el-table-column
                     prop="showRoom"
@@ -53,7 +59,9 @@
             <el-table-column
                     label="展会状态">
                 <template slot-scope="scope">
-                    <el-tag :type="scope.row.status==0?'':(scope.row.status==1?'success':'info')">{{scope.row.status==0?'筹备中':(scope.row.status==1?'进行中':'已结束')}}</el-tag>
+                    <el-tag :type="color[scope.row.status]">
+                        {{type[scope.row.status]}}
+                    </el-tag>
                 </template>
             </el-table-column>
             <el-table-column
@@ -77,15 +85,22 @@
         name: "mangeExhibit",
         data(){
             return{
-                tableData:[]
+                tableData:[],
+                type:[
+                    '等待上传','待审核','初审通过','初审未通过','初审通过','终审通过','终审未通过','已删除'
+                ],
+                color:[
+                    'info','','success','warning','success','success','warning','danger'
+                ],
             }
         },
         methods:{
             initData(){
-                this.axios.get(`api/exhibition/exhibition/all/query/keyWord?keyWord=%E6%B5%8B%E8%AF%95&pageNum=1`).then((res)=>{this.formatData(res.data.data.list)})
+                this.axios.post(`/api/exhibition/organizer/queryOrganizerHoldExhibition?id=1`).then((res)=>{this.formatData(res.data.data.data)})
             },
             formatData(list){
                 this.tableData=[]
+                console.log(list)
                 for(let item of list){
                     this.tableData.push({
                         name:item.name,
@@ -99,7 +114,10 @@
                         tel:item.tel
                     })
                 }
-            }
+            },
+            handleNew(scope){
+                this.$router.push({name:'Add'})
+            },
         },
         created() {
             this.initData()
@@ -108,5 +126,11 @@
 </script>
 
 <style scoped>
-
+    .text{
+        overflow:hidden;
+        text-overflow:ellipsis;
+        display:-webkit-box;
+        -webkit-line-clamp:3;
+        -webkit-box-orient:vertical;
+    }
 </style>

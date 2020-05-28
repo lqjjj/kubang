@@ -52,14 +52,12 @@
             .then(
             (res)=>{
                 this.goodsData=res.data.data
-                console.log(res.data.data)
             }
             )
             this.axios.get(`/api/exhibition/user/collect/company?userId=1`)
                 .then(
                     (res)=>{
                         this.companyData=res.data.data
-                        console.log(res.data.data)
                     }
                 )
         }
@@ -127,14 +125,13 @@
             .then(
             (res)=>{
                 this.goodsData=res.data.data
-                console.log(res.data.data)
+
             }
             )
             this.axios.get(`/api/exhibition/user/collect/company?userId=1`)
                 .then(
                     (res)=>{
                         this.companyData=res.data.data
-                        console.log(res.data.data)
                     }
                 )
         }

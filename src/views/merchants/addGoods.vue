@@ -6,14 +6,14 @@
                 <el-input v-model="list.goodsName"></el-input>
             </div>
         </div>
-        <div class="list">
-            <div class="name">展区号：</div>
+        <div class="list" v-if="role">
+            <div class="name" >展区号：</div>
             <div class="input">
                 <el-input v-model="list.goodsAreaNumber"></el-input>
             </div>
         </div>
-        <div class="list">
-            <div class="name">优先级：</div>
+        <div class="list" v-if="role">
+            <div class="name" >优先级：</div>
             <div class="input">
                 <el-input v-model="list.priority"></el-input>
             </div>
@@ -27,7 +27,7 @@
                 </el-select>
             </div>
         </div>
-        <div class="list">
+        <div class="list" v-if="role">
             <div class="name">时间：</div>
             <div class="input">
                 <el-row :gutter="20">
@@ -43,13 +43,13 @@
         <div class="list">
             <div class="name">价格：</div>
             <div class="input">
-                <el-input v-model="list.currentPrice" readonly></el-input>
+                <el-input v-model="list.currentPrice"></el-input>
             </div>
         </div>
         <div class="list">
             <div class="name">产地：</div>
             <div class="input">
-                <el-input v-model="list.originPlace" readonly></el-input>
+                <el-input v-model="list.originPlace" ></el-input>
             </div>
         </div>
         <div class="list">
@@ -69,15 +69,19 @@
 <!--                        fit="fit"></el-image>-->
 <!--            </div>-->
             <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
+                    class="upload-demo"
+                    ref="upload"
+                    :http-request="upload"
+                    :file-list="fileList"
+                    :auto-upload="false"
+            >
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                <div slot="tip" class="el-upload__tip"></div>
             </el-upload>
         </div>
         <div class="footer">
-            <div class="find" @click="back">确认修改</div>
+            <div class="find" @click="add" v-if="!type">添加</div>
+            <div class="find" @click="edit" v-if="type">修改</div>
             <div class="find" @click="back">返回</div>
         </div>
     </div>
@@ -106,15 +110,59 @@
                         label:'美妆'
                     },
                 ],
+                role:1,
+                type:1,
+                fileList:[]
             }
         },
         methods:{
             back(){
                 this.$router.back()
             },
+            add(){
+                this.list.companyId=1
+                this.list.goodsStatus=1
+                let filelist=this.$refs.upload.uploadFiles
+                if(!filelist[0]){
+                    this.$message({
+                        type:"warning",
+                        message:"请添加图片"
+                    })
+                    return
+                }
+                let goodsId=''
+                let formData=new FormData
+                let headerConfig={headers:{'Content-Type': 'multipart/form-data'}};
+                if(filelist[0]){
+                    formData.append('file',filelist[0].raw)
+                }
+                this.axios.post(`/api/exhibition/goods/add`,this.list).then((res)=>
+                    {
+                        console.log(res)
+                        goodsId=res.data.data.goodsId
+                        this.axios.post(`/api/exhibition/goods/upload/picture?goodsId=${goodsId}`,formData,headerConfig).then(
+                            ()=>{
+                                this.$message.success('添加成功')
+                                this.$router.push('/goods')
+                            }
+                        )
+                    }
+                )
+            },
+            edit(){
+                this.axios.post(`/api/exhibition/goods/modify/goodsInfo`,this.list).then((res)=>{
+                    console.log(res)
+                })
+            }
         },
         mounted() {
-            console.log(this.$route.params.data)
+            if(!this.$route.params.data){
+                this.list={
+                }
+                this.type=0
+                this.role=0
+                return
+            }
             this.list=this.$route.params.data
             this.list.startTime=new Date(this.list.startTime).toLocaleDateString()
             // this.list.picture=[...this.$route.params.data.picture]

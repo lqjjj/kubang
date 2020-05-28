@@ -55,17 +55,25 @@
             </el-col>
         </el-row>
         <el-form-item label="公司介绍" >
-            <el-input type="textarea" autosize v-model="list.introduction" :readonly=true ></el-input>
+            <el-input type="textarea" autosize v-model="list.introduction" ></el-input>
         </el-form-item>
         <el-form-item label="公司图标" v-if="!this.value">
         <el-image :src="list.headPicture" style="width: 250px;height: 250px" >
             <el-input v-model="list.headPicture" :readonly=true  v-if="this.value"></el-input>
         </el-image>
         </el-form-item>
-
         <el-col :span="12">
         <el-form-item label="公司图标" v-if="this.value">
-                <el-input v-model="list.headPicture" :readonly=true  v-if="this.value"></el-input>
+            <el-upload
+                    class="upload-demo"
+                    ref="upload"
+                    :http-request="upload"
+                    :file-list="fileList"
+                    :auto-upload="false"
+            >
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                <div slot="tip" class="el-upload__tip"></div>
+            </el-upload>
         </el-form-item>
             </el-col>
     </el-form>
@@ -78,7 +86,9 @@
         data(){
             return{
                 list:{},
-                value: false
+                value: false,
+                fileList:[],
+                id:1
             }
         },
         methods:{
@@ -88,7 +98,7 @@
                 }
             },
             initPage(){
-                this.axios.get(`/api/exhibition/company/getInformationByCompanyId?id=1`)
+                this.axios.get(`/api/exhibition/company/getInformationByCompanyId?id=${this.id}`)
                     .then((res)=>{
                         this.list=res.data.data.companyInformation
                     })
@@ -99,7 +109,14 @@
                     cancelButtonText: '取消',
                     type: 'success'
                 }).then(() => {
-                    this.axios.post('/api/exhibition/company/updateInformation?userId=1',this.list).then(()=>{
+                    let filelist=this.$refs.upload.uploadFiles
+                    let formData=new FormData
+                    let headerConfig={headers:{'Content-Type': 'multipart/form-data'}};
+                    if(filelist[0]){
+                        formData.append('file',filelist[0].raw)
+                    }
+                        // ?companyId=1&name=${this.list.name}&address=${this.list.addresss}&website=${this.list.website}&type=${this.list.type}&tel=${this.list.telephone}&introduce=${this.list.introduction}
+                    this.axios.post(`/api/exhibition/company/updateInformation?companyId=1&name=${this.list.name}&address=${this.list.addresss}&website=${this.list.website}&type=${this.list.type}&tel=${this.list.telephone}&introduce=${this.list.introduction}`,formData,headerConfig).then(()=>{
                         this.$message({
                             message: '修改成功！',
                             type: 'success'
@@ -120,6 +137,9 @@
             }
         },
         created() {
+            if(this.$route.query.id){
+                this.id=this.$route.query.id
+            }
             this.initPage()
         }
     }

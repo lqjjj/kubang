@@ -15,15 +15,15 @@
                 </el-switch>
             </el-form-item>
             <el-form-item label="邮箱/手机号" label-width="120px">
-                <el-input > </el-input>
+                <el-input v-model="account"> </el-input>
             </el-form-item>
             <el-form-item label="密码" label-width="120px" v-if="type">
-                <el-input > </el-input>
+                <el-input v-model="pass" type="password"> </el-input>
             </el-form-item>
             <el-row type="flex" :gutter="20" v-show="!type">
                 <el-col :span="20">
                     <el-form-item label="验证码" prop="age">
-                        <el-input ></el-input></el-form-item>
+                        <el-input v-model="code"></el-input></el-form-item>
                 </el-col>
                 <el-col :span="10">
                     <el-button @click="send">
@@ -50,7 +50,10 @@
                 type:true,
                 show:true,
                 count:'',
-                timer: null
+                timer: null,
+                code:"",
+                pass:"",
+                account:""
             }
     },
         methods:{

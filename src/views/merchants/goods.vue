@@ -39,10 +39,16 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    label="状态">
+                <template slot-scope="scope">
+                    <el-tag  >{{state[scope.row.goodsStatus]}}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
                     label="管理" >
                 <template slot-scope="scope">
                     <el-button size="small" @click="handleEdit(tableData[scope.$index])">编辑</el-button>
-                    <el-button size="small" @click="handleApply(scope.$index)">优先级申请</el-button>
+                    <el-button size="small" @click="handleApply(scope.row.goodsId)">优先级申请</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,21 +71,24 @@
                 ],
                 type:[
                     '','教育','农业','运动','美妆'
-                ]
+                ],
+                state:['','审核中','审核通过','审核未通过','展品优先级审核中','提交修改审核中'],
+                id:1
             }
         },
         methods:{
-            handleApply(){
+            handleApply(id){
+                console.log(id)
                 this.$prompt('请申请输入优先级(0，1，2，3)', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputPattern: /[0-3]/,
                     inputErrorMessage: '请输入0，1，2，3'
                 }).then(({ value }) => {
-                    this.$message({
-                        type: 'success',
-                        message: '你的邮箱是: ' + value
-                    });
+                    this.axios.post(`/api/exhibition/goods/modify/priority?goodsId=${id}&priority=${value}`)
+                    .then(()=>{
+                            this.init()
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -89,10 +98,19 @@
             },
             handleEdit(item){
                 this.$router.push({name:'addGoods',params:{data:item}})
+            },
+            handleNew(){
+                this.$router.push({name:'addGoods'})
+            },
+            init(){
+                this.axios.get(`/api/exhibition/goods/query/company?companyId=${this.id}&goodsStatus=0&pageNum=1&pageSize=5`).then(res=>this.tableData=res.data.data.list)
             }
         },
         created() {
-            this.axios.get(`/api/exhibition/goods/query/company?companyId=7&pageNum=1&pageSize=5`).then(res=>this.tableData=res.data.data.list)
+            if(this.$route.query.id){
+                this.id=this.$route.query.id
+            }
+            this.init()
         }
     }
 </script>

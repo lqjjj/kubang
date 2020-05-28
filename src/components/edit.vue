@@ -145,25 +145,42 @@
                 options2:[
                     {
                         value:0,
-                        label:'待审核'
+                        label:'待上传'
                     },
                     {
                         value:1,
-                        label:'审核通过'
+                        label:'待通过'
                     },
                     {
                         value:2,
-                        label:'审核未通过'
+                        label:'初审通过'
                     },
                     {
                         value:3,
-                        label:'已删除'
+                        label:'初审未通过'
+                    },
+                    {
+                        value:4,
+                        label:'初审通过'
+                    },
+                    {
+                        value:5,
+                        label:'终审通过'
+                    },
+                    {
+                        value:6,
+                        label:'终审未通过'
+                    },
+                    {
+                        value:7,
+                        label:'删除'
                     }
                     ]
             };
         },
         methods: {
             submit() {
+                console.log(this.ruleForm)
                 this.$confirm('你确定要提交修改吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -193,7 +210,6 @@
             if(this.$route.params.data){
                 this.ruleForm=this.$route.params.data
                 this.ruleForm.startTime=new Date(this.ruleForm.startTime)
-                console.log(this.ruleForm)
                 this.buttonName='修改'
             }
 

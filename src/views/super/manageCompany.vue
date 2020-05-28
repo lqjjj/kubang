@@ -5,8 +5,6 @@
             <el-col :span="2"><el-button  @click="handleSearch">搜索商家</el-button></el-col>
             <el-col :span="6"><el-button  @click="handleId">搜索商家ID</el-button></el-col>
             <el-col :span="5"><el-button  @click="handleNew">新增商家</el-button></el-col>
-            <el-col :span="2"><el-button  @click="handlePage('up')">上一页</el-button></el-col>
-            <el-col :span="2"><el-button  @click="handlePage('next')">下一页</el-button></el-col>
         </el-row>
     <el-table
             :data="tableData"
@@ -32,7 +30,7 @@
                 width="200">
         </el-table-column>
         <el-table-column
-                prop="phone"
+                prop="telephone"
                 label="电话"
                 width="150">
         </el-table-column>
@@ -41,17 +39,19 @@
                 width="250"
         >
             <template slot-scope="scope">
-                <el-button size="small" @click="handleEdit(scope.$index)">查看商品</el-button>
-                <el-button size="small" @click="handleEdit(scope.$index)">详细信息</el-button>
+                <el-button size="small" @click="handleGoods(scope.row.id)">查看商品</el-button>
             </template>
         </el-table-column>
         <el-table-column
                 label="管理" >
             <template slot-scope="scope">
-                <el-button size="small" @click="handleEdit(scope.$index)">编辑</el-button>
+                <el-button size="small" @click="handleEdit(scope.row.id)">编辑</el-button>
             </template>
         </el-table-column>
     </el-table>
+        <div class="pagination">
+        <el-pagination layout="prev, pager, next" :page-size=10 :current-page="cuPage" :total="total" @current-change="handleCurrentChange"></el-pagination>
+    </div>
     </div>
 </template>
 
@@ -60,25 +60,42 @@
         name: "manageCompany",
         data(){
             return {
-                tableData:[{
-                    id:1,
-                    name:'飞利浦',
-                    type:'公司类型',
-                    website:'www.qewqweqwew.com',
-                    phone:'13423422123'
-                },{
-                    id:2,
-                    name:'旺旺',
-                    type:'公司类型',
-                    website:'www.qeww.com',
-                    phone:'13423422123'
-                }
-                ]
+                tableData:[
+
+                ],
+                total:1,
+                cuPage:1
             }
+        },
+        methods:{
+            init(){
+                this.axios.get(`/api/exhibition/Admin/queryAllCompany/${this.cuPage}`)
+                .then((res)=>{
+                    this.tableData=res.data.data.list
+                    this.total=res.data.data.total
+                })
+            },
+            handleCurrentChange(page){
+                this.cuPage=page;
+                this.init()
+            },
+            handleEdit(id){
+                this.$router.push({path:'/merInfo',query:{id:id}})
+            },
+            handleGoods(id){
+                this.$router.push({path:'/manageCompany/goods',query:{id:id}})
+            }
+        },
+        mounted() {
+            this.init()
         }
     }
 </script>
 
 <style scoped>
-
+    .pagination{
+        margin-top: 22px;
+        display: flex;
+        justify-content: center;
+    }
 </style>

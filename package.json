@@ -2,11 +2,15 @@
   "name": "kubang",
   "version": "0.1.0",
   "private": true,
+  "description": "1",
+  "author": "lqjjj <729990192@qq.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
+  "main": "index.js",
   "dependencies": {
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
@@ -19,7 +23,9 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
+    "@vue/cli-plugin-unit-jest": "~4.3.0",
     "@vue/cli-service": "^4.0.0",
+    "@vue/test-utils": "1.0.0-beta.31",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
@@ -31,9 +37,6 @@
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.10"
   },
-  "description": "1",
-  "main": "index.js",
-  "repository": "https://github.com/lqjjj/kubang.git",
-  "author": "lqjjj <729990192@qq.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "https://github.com/lqjjj/kubang.git"
 }

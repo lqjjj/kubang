@@ -2,11 +2,11 @@
     <div id="exhibition">
         <el-row :gutter="20" id="search_bar">
             <el-col :span="6"><el-input v-model="searching" placeholder="请输入关键词搜索展会" style="margin-bottom: 20px;width: 300px"></el-input></el-col>
-            <el-col :span="2"><el-button  @click="handleSearch">搜索展会</el-button></el-col>
-            <el-col :span="6"><el-button  @click="handleId">搜索展会ID</el-button></el-col>
-            <el-col :span="5"><el-button  @click="handleNew">新增展会</el-button></el-col>
-            <el-col :span="2"><el-button  @click="handlePage('up')">上一页</el-button></el-col>
-            <el-col :span="2"><el-button  @click="handlePage('next')">下一页</el-button></el-col>
+            <el-col :span="3"><el-button  @click="handleSearch">搜索展会</el-button></el-col>
+<!--            <el-col :span="3"><el-button  @click="handleId">搜索展会ID</el-button></el-col>-->
+            <el-col :span="5"><el-checkbox v-model="checked" style="line-height: 40px" @change="checkboxChange">查看进行中的展会</el-checkbox></el-col>
+            <el-col :span="3"><el-button  @click="handleNew">新增展会</el-button></el-col>
+
         </el-row>
         <el-table
                 :data="tableData"
@@ -36,15 +36,14 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    prop="organizer"
-                    label="主办单位"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="address"
-                    label="地址"
-                    width="150"
-            >
+                    label="图片预览"
+                    width="250">
+                <template slot-scope="scope">
+                    <el-image
+                            style="width: 200px; height: 100px"
+                            :src="scope.row.picture"
+                            fit="contain"></el-image>
+                </template>
             </el-table-column>
             <el-table-column
                     label="展会概况"
@@ -64,14 +63,26 @@
             <el-table-column
                 label="展会状态">
             <template slot-scope="scope">
-                <el-tag :type="scope.row.status==0?'':(scope.row.status==1?'success':'info')">{{scope.row.status==0?'筹备中':(scope.row.status==1?'进行中':'已结束')}}</el-tag>
+                <el-tag :type="color[scope.row.status]">
+                    {{type[scope.row.status]}}
+                </el-tag>
             </template>
         </el-table-column>
             <el-table-column
-                    prop="tel"
-                    label="联系方式"
-                    width="120"
+                    label="展示顺序"
+                    width="100"
             >
+                <template slot-scope="scope">
+                <el-select v-model="scope.row.priority" placeholder="" @change="onchange($event,scope.row.id)" :disabled='!(new Date()>new Date(scope.row.startTime)&&new Date()<new Date(scope.row.endTime))'>
+                    <el-option
+                            v-for="item in options"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                    >
+                    </el-option>
+                </el-select>
+                </template>
             </el-table-column>
             <el-table-column
                     label="管理" v-if="this.$store.getters.type===4">
@@ -80,6 +91,9 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination layout="prev, pager, next" :page-size=10 :current-page="cuPage" :total="total" @current-change="handleCurrentChange"></el-pagination>
+        </div>
     </div>
 </template>
 
@@ -94,18 +108,17 @@
                 page:1,
                 data:[],
                 options:[
-                    {
-                    value:'name',
-                    label:'名称'},
-                    {
-                        value: 'date',
-                        label: '日期'
-                    },
-                    {
-                        value: 'id',
-                        label: '展会id'
-                    }
-                ]
+                    0,1,2,3,4
+                ],
+                cuPage:1,
+                total:1,
+                type:[
+                    '等待上传','待审核','初审通过','初审未通过','初审通过','终审通过','终审未通过','已删除'
+                ],
+                color:[
+                    'info','','success','warning','success','success','warning','danger'
+                ],
+                checked:false
             }
         },
         methods:{
@@ -118,19 +131,16 @@
             handleDetails(scope){
                 this.$router.push('/exhibit')
             },
-            handlePage(type){
-                if (type==='next'){
-                    this.page++
-                }
-                if (type==='up'){
-                    if(this.page>1){
-                    this.page--}
-                }
+            handleCurrentChange(page){
+                this.cuPage=page;
                 this.initData()
             },
             handleSearch(){
-                this.axios.get(`/api/exhibition/admin/query/keyWord?keyWord=${this.searching}&pageNum=1`).then((res)=>{
+                this.axios.get(`/api/exhibition/Admin/queryExhibitionByKeyWord?keyWord=${this.searching}&pageNum=1`).then((res)=>{
                     this.formatData(res.data.data.list)})
+                this.checked=false
+                this.cuPage=1;
+                this.total=5
             },
             handleId(){
                 this.axios.get(`/api/exhibition/exhibition/admin/query/id/${this.searching}`).then((res)=>{
@@ -141,12 +151,20 @@
                 })
             },
             initData(){
-                this.axios.get(`/api/exhibition/Admin/queryAllExhibition/${this.page}`).then((res)=>{this.formatData(
-                    res.data.data.list)})
+                if(this.checked===true){
+                    this.axios.get(`/api/exhibition/exhibition/querySortOnGoing`).then((res)=>{
+                        this.formatData(res.data.data)
+                        this.total=10
+                    })
+                }else {
+                this.axios.get(`/api/exhibition/Admin/queryAllExhibition/${this.cuPage}`).then((res)=>{
+                    this.formatData(res.data.data.list)
+                    this.total=res.data.data.total
+                })
+                }
             },
             formatData(list){
                 this.tableData=[]
-                console.log(list)
                 this.data=list
                 for(let item of list){
                     this.tableData.push({
@@ -158,9 +176,20 @@
                         introduction:item.introduction,
                         showRoom:item.showRoom,
                         status:item.status,
-                        tel:item.tel
+                        tel:item.tel,
+                        picture:item.picture,
+                        priority:item.priority
                     })
                 }
+            },
+            onchange(value,id){
+                this.axios.post(`/api/exhibition/exhibition/setPriority?id=${id}&priority=${value}`).then((res)=>{
+                    this.initData()
+                    this.$message.success('修改成功')
+                })
+            },
+            checkboxChange(){
+                this.initData()
             }
         },
         computed:{

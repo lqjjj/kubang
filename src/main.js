@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import 'element-ui'
+import axios from 'axios'
 Vue.config.productionTip = false
 
 Date.prototype.Format = function(fmt)

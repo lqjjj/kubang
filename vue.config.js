@@ -3,11 +3,16 @@ module.exports = {
     devServer: {
         proxy: {
             '/api':{
-                target:'http://121.40.239.56/',
+                target:'https://www.coupon580.com/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''
-                }
+                },
+                headers: {
+                    Referer: 'https://www.coupon580.com'
+                },
+                https:true,
+                secure: false,
             }
         }
     }
