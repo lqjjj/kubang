@@ -1,12 +1,14 @@
 <template>
     <div id="login">
+        <h2 style="text-align: center">酷邦网管理系统</h2>
     <el-radio-group v-model="radio" style="">
         <el-radio :label="1">个人用户</el-radio>
         <el-radio :label="2">商家用户</el-radio>
         <el-radio :label="3">展会用户</el-radio>
         <el-radio :label="4">管理员用户</el-radio>
     </el-radio-group>
-        <el-form label-width="120px" style="margin-top: 50px;height:200px" >
+<!--        <el-form label-width="120px" style="margin-top: 50px;height:200px" >-->
+            <el-form label-width="120px" style="height:200px" >
             <el-form-item>
                 <el-switch
                         v-model="type"

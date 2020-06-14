@@ -120,7 +120,7 @@
                 this.$router.back()
             },
             add(){
-                this.list.companyId=1
+                this.list.companyId=7
                 this.list.goodsStatus=1
                 let filelist=this.$refs.upload.uploadFiles
                 if(!filelist[0]){

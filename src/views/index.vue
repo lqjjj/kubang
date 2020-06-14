@@ -2,7 +2,6 @@
     <div id="index">
         <el-container>
             <el-header style="padding-right: 0;background: rgba(255,255,255,0.5)"><span class="title">酷邦网管理系统</span>
-                <span style>管理员用户 username</span>
                 <el-dropdown @command='handle' trigger="click" size="small" style="float: right;line-height: 60px;width:100px;cursor: pointer;text-align: center">
                     <span class="el-dropdown-link">
                         <i class="el-icon-user" style="font-size: 20px;padding: 20px" ></i>

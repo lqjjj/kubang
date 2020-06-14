@@ -138,6 +138,7 @@
                     this.adData=res.data.data.goodsList
                 })
             },
+
             dealEdit(scope){
                 this.dialogFormVisible = true
                 this.form.startTime=scope.startTime
@@ -152,7 +153,7 @@
             },
             dealConfirm(){
                 console.log(this.form)
-                this.axios.post(`/api/exhibition/advertisement/updateAds`,this.form).then((res)=>{
+                this.axios.post(`/api/exhibition/advertisement/updateAds?id=${this.form.id}&priority=${this.form.priority}&startTime=${new Date(this.form.startTime)}&endTime=${new Date(this.form.endTime)}&picture=${this.form.picture}`).then((res)=>{
                     console.log(res)
                 })
             }

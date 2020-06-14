@@ -73,7 +73,7 @@
                     '','教育','农业','运动','美妆'
                 ],
                 state:['','审核中','审核通过','审核未通过','展品优先级审核中','提交修改审核中'],
-                id:1
+                id:7
             }
         },
         methods:{
@@ -103,7 +103,7 @@
                 this.$router.push({name:'addGoods'})
             },
             init(){
-                this.axios.get(`/api/exhibition/goods/query/company?companyId=${this.id}&goodsStatus=0&pageNum=1&pageSize=5`).then(res=>this.tableData=res.data.data.list)
+                this.axios.get(`/api/exhibition/goods/query/company?companyId=${this.id}&goodsStatus=0&pageNum=1&pageSize=10`).then(res=>this.tableData=res.data.data.list)
             }
         },
         created() {

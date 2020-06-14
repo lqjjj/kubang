@@ -85,14 +85,14 @@ export default new Vuex.Store({
                   icon:['el-icon-star-off']
                 }
               },
-              {
-                path: '/message',
-                component: message,
-                names: '留言与回复',
-                meta:{
-                  icon:['el-icon-chat-dot-round']
-                }
-              },
+              // {
+              //   path: '/message',
+              //   component: message,
+              //   names: '留言与回复',
+              //   meta:{
+              //     icon:['el-icon-chat-dot-round']
+              //   }
+              // },
               {
                 path:"/collectionDetail",
                 name:'collectDetail',
@@ -139,27 +139,27 @@ export default new Vuex.Store({
                   icon:['el-icon-s-opportunity']
                 }
               },
-              {
-                path:'/applyGood',
-                component:applyGood,
-                names:'申请展品',
-                meta:{
-                  icon:['el-icon-plus']
-                }
-              },
+              // {
+              //   path:'/applyGood',
+              //   component:applyGood,
+              //   names:'申请展品',
+              //   meta:{
+              //     icon:['el-icon-plus']
+              //   }
+              // },
               {
                 path:'/addGoods',
                 name:'addGoods',
                 component:addGoods
               },
-              {
-                path:'/applyAdvertising',
-                component:applyAdvertising,
-                names:'广告申请',
-                meta:{
-                  icon:['el-icon-s-data']
-                }
-              }
+              // {
+              //   path:'/applyAdvertising',
+              //   component:applyAdvertising,
+              //   names:'广告申请',
+              //   meta:{
+              //     icon:['el-icon-s-data']
+              //   }
+              // }
             ]
           }]
       }
@@ -185,14 +185,14 @@ export default new Vuex.Store({
                   icon:['el-icon-s-unfold']
                 }
               },
-              {
-                path: '/apply',
-                component: apply,
-                names: '我要开展',
-                meta:{
-                  icon:['el-icon-edit']
-                }
-              },
+              // {
+              //   path: '/apply',
+              //   component: apply,
+              //   names: '我要开展',
+              //   meta:{
+              //     icon:['el-icon-edit']
+              //   }
+              // },
               {
                 path:'/mangeex',
                 component:mangeExhibit,
@@ -204,7 +204,7 @@ export default new Vuex.Store({
               {
                 path:'/auditGood',
                 component:auditGood,
-                names:'商家管理',
+                names:'商家审核',
                 meta:{
                   icon:['el-icon-s-management']
                 }
